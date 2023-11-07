@@ -42,11 +42,11 @@ class SearchViewController: UIViewController, UISearchControllerDelegate, UISear
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        
+        tableView.register(SearchListCell.self, forCellReuseIdentifier: "MoviesCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
 
-        tableView.rowHeight = 50
+        tableView.rowHeight = 200
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

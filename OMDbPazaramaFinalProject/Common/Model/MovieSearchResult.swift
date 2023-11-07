@@ -15,7 +15,6 @@ struct MovieSearchResult: Codable {
         var type: String
         var poster: String
 
-        // Map the keys from the JSON to the properties in your struct.
         enum CodingKeys: String, CodingKey {
             case title = "Title"
             case year = "Year"
@@ -27,7 +26,6 @@ struct MovieSearchResult: Codable {
 
     var search: [MovieInfo]
 
-    // Map the keys from the JSON to the properties in your struct.
     enum CodingKeys: String, CodingKey {
         case search = "Search"
         case totalResults
