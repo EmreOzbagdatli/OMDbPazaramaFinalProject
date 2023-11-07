@@ -21,14 +21,18 @@ class DetailViewController: UIViewController {
         displayMovieDetails()
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupImageView()
+    }
 
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = "Movie Details"
     }
 
     private func displayMovieDetails() {
-
         if let movie = selectedMovie {
             let titleLabel = UILabel()
             titleLabel.text = movie.title
@@ -113,15 +117,24 @@ class DetailViewController: UIViewController {
         }
     }
     
-    @objc func didFavButtonTapped() {
+    private func setupImageView() {
         var favMovies = UserDefaults.standard.stringArray(forKey: "favoriteMovies") ?? []
-        
         isFavorited = favMovies.contains(where: {$0 == selectedMovie?.imdbID})
+
+        favButton.image = isFavorited ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+    }
+    
+    private func buttonSaved() {
+        var favMovies = UserDefaults.standard.stringArray(forKey: "favoriteMovies") ?? []
+        isFavorited = favMovies.contains(where: {$0 == selectedMovie?.imdbID})
+        
         isFavorited.toggle()
 
         if isFavorited {
             favButton.image = UIImage(systemName: "heart.fill")
-            favMovies.append(selectedMovie?.imdbID ?? "")
+            if !favMovies.contains(selectedMovie?.imdbID ?? "") {
+                favMovies.append(selectedMovie?.imdbID ?? "")
+            }
 
         } else {
             favButton.image = UIImage(systemName: "heart")
@@ -130,9 +143,10 @@ class DetailViewController: UIViewController {
             }
         }
         UserDefaults.standard.setValue(favMovies, forKey: "favoriteMovies")
-        
-        
-        
+
+    }
+    @objc func didFavButtonTapped() {
+        buttonSaved()
     }
 
 

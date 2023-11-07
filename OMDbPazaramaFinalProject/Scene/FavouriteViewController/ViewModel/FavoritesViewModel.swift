@@ -13,6 +13,7 @@ final class FavoritesViewModel {
     var detailMovies : [MovieDetail] = []
     
     func fetchMovies(id:String,completion:@escaping()->Void){
+        self.detailMovies.removeAll()
         NetworkService.shared.fetchMovies(by: id) { [weak self] result in
             switch result{
             case.success(let movie):
