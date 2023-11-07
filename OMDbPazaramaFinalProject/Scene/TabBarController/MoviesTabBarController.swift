@@ -35,10 +35,7 @@ class MoviesTabBarController: UITabBarController {
         let nav1 = UINavigationController(rootViewController: vc1)
         let nav2 = UINavigationController(rootViewController: vc2)
         let nav3 = UINavigationController(rootViewController: vc3)
-        
-//        tabBar.tintColor = .label
-//        tabBar.backgroundColor = .systemGray6
-        
+                
         setViewControllers([nav2,nav1,nav3], animated: true)
         
     }
