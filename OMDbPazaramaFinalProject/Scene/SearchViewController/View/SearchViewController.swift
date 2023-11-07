@@ -34,11 +34,7 @@ class SearchViewController: UIViewController, UISearchControllerDelegate, UISear
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-//        viewModel.fetchMovies(by: "Batman") { [weak self] in
-//            DispatchQueue.main.async {
-//                self?.tableView.reloadData()
-//            }
-//        }
+
     }
 
     private func setupTableView() {

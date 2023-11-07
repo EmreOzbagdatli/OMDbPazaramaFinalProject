@@ -13,6 +13,7 @@ extension SearchViewController: UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MoviesCell") as! SearchListCell
 
         let movie = viewModel.movies[indexPath.row]
+        
         cell.movieTitleLabel.text = movie.title
         cell.movieYearLabel.text = movie.year
         if let imageURL = URL(string: movie.poster) {
