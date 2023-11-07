@@ -8,37 +8,39 @@
 import UIKit
 
 class SearchViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
+    var searchText: String = ""
 
-    
     let searchController = UISearchController()
-    
+
     lazy var viewModel: SearchViewModel = {
         let vm = SearchViewModel()
         return vm
     }()
-    
-    private let tableView: UITableView = {
+
+    let tableView: UITableView = {
         let table = UITableView()
         return table
     }()
     
+    private let emptyWarningLabel: UILabel = {
+        let view = UILabel()
+        view.text = "Search Movies"
+        view.backgroundColor = .black
+        view.textColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        viewModel.fetchMovies { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    self?.tableView.reloadData()
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
-            }
-            
-        }
-
+//        viewModel.fetchMovies(by: "Batman") { [weak self] in
+//            DispatchQueue.main.async {
+//                self?.tableView.reloadData()
+//            }
+//        }
     }
-    
+
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -52,24 +54,40 @@ class SearchViewController: UIViewController, UISearchControllerDelegate, UISear
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+            ])
     }
 
-    private func setupUI(){
-        
+    private func setupUI() {
         view.backgroundColor = .systemOrange
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        
-        setupTableView()
 
-        
+        setupTableView()
+        setupEmptyWarningLabel()
     }
-    @objc(updateSearchResultsForSearchController:) func updateSearchResults(for searchController: UISearchController){
-        guard let text = searchController.searchBar.text else { 
+    
+    private func setupEmptyWarningLabel() {
+        view.addSubview(emptyWarningLabel)
+        
+        NSLayoutConstraint.activate([
+            emptyWarningLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyWarningLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+    }
+    
+    @objc(updateSearchResultsForSearchController:) func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else {
             return
         }
-        URLConstant.searchBarText = text
+        searchText = text
+        viewModel.resetPageIndex()
+        
+        viewModel.fetchMovies(by: text) { [weak self] in
+            DispatchQueue.main.async {
+                self?.emptyWarningLabel.isHidden = !(self?.viewModel.movies.isEmpty ?? false)
+                self?.tableView.reloadData()
+            }
+        }
     }
 }

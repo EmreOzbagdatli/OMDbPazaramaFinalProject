@@ -28,8 +28,8 @@ class NetworkService {
     static let shared = NetworkService()
     private init() { }
 
-    func fetchMovies(completion: @escaping (Result<MovieSearchResult, NetworkError>) -> Void) {
-        if let url = URL(string: "\(URLConstant.baseURL)\(URLConstant.searchBarText)&apikey=\(URLConstant.apiKey)") {
+    func fetchMovies(by title: String, pageIndex: Int = 1, completion: @escaping (Result<MovieSearchResult, NetworkError>) -> Void) {
+        if let url = URL(string: "\(URLConstant.baseURL)\(title)&page=\(pageIndex)&apikey=\(URLConstant.apiKey)") {
             URLSession.shared.dataTask(with: url) { data, response, error in
                 if let error = error {
                     print("Error: \(error)")
@@ -46,7 +46,6 @@ class NetworkService {
                 do {
                     let movies = try JSONDecoder().decode(MovieSearchResult.self, from: data)
                     completion(.success(movies))
-                    print("moviews")
                 } catch {
                     print("Decoding Error: \(error)")
                     completion(.failure(.decodeError))

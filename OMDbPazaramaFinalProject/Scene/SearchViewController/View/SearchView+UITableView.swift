@@ -12,14 +12,22 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MoviesCell") as! SearchListCell
 
-//        cell.textLabel?.text = viewModel.movies[indexPath.row].title
-//        cell.textLabel?.text = viewModel.movies[indexPath.row].year
-        
-        cell.movieTitleLabel.text = viewModel.movies[indexPath.row].title
-        cell.movieYearLabel.text = viewModel.movies[indexPath.row].year
-        if let imageURL = URL(string: viewModel.movies[indexPath.row].poster) {
+        let movie = viewModel.movies[indexPath.row]
+        cell.movieTitleLabel.text = movie.title
+        cell.movieYearLabel.text = movie.year
+        if let imageURL = URL(string: movie.poster) {
             cell.moviePoster.kf.setImage(with: imageURL)
         }
+        
+        if movie.imdbID == viewModel.movies.last?.imdbID {
+            viewModel.incrementPageIndex()
+            viewModel.fetchMovies(by: searchText) { [weak self] in
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            }
+        }
+        
         return cell
     }
     
