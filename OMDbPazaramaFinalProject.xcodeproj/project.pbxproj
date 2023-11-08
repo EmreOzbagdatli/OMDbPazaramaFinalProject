@@ -30,6 +30,7 @@
 		1EC1A6E72AF9B2B5005B3824 /* SearchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC1A6E62AF9B2B5005B3824 /* SearchListCell.swift */; };
 		1EC1A6E92AF9B2DD005B3824 /* SearchView+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC1A6E82AF9B2DD005B3824 /* SearchView+UITableView.swift */; };
 		1EC1A6EB2AF9BB64005B3824 /* URLConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC1A6EA2AF9BB64005B3824 /* URLConstant.swift */; };
+		1EC6FCDC2AFB809F0051D996 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6FCDB2AFB809F0051D996 /* DetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		1EC1A6E62AF9B2B5005B3824 /* SearchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListCell.swift; sourceTree = "<group>"; };
 		1EC1A6E82AF9B2DD005B3824 /* SearchView+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+UITableView.swift"; sourceTree = "<group>"; };
 		1EC1A6EA2AF9BB64005B3824 /* URLConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConstant.swift; sourceTree = "<group>"; };
+		1EC6FCDB2AFB809F0051D996 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +283,7 @@
 		1EC1A6CB2AF95AB3005B3824 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				1EC6FCDB2AFB809F0051D996 /* DetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -501,6 +504,7 @@
 				1EC1A6E42AF9ADE4005B3824 /* SearchViewModel.swift in Sources */,
 				1E32355E2AFAB6920085AFEB /* FavoritesViewModel.swift in Sources */,
 				1EC1A6E92AF9B2DD005B3824 /* SearchView+UITableView.swift in Sources */,
+				1EC6FCDC2AFB809F0051D996 /* DetailViewModel.swift in Sources */,
 				1EA172BB2AF9488E008A543B /* SceneDelegate.swift in Sources */,
 				1EC1A6CF2AF95AD3005B3824 /* DetailViewController.swift in Sources */,
 				1E3235542AFAA1DC0085AFEB /* FavouriteTableViewCell.swift in Sources */,
