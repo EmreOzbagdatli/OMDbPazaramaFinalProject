@@ -20,10 +20,9 @@ final class FavoritesViewModel {
                 self?.detailMovies.append(movie)
                 completion()
             case.failure(let error):
+                print(error)
                 completion()
             }
-        
-            
         }
     }
 }

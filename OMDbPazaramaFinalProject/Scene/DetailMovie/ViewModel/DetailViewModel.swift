@@ -9,20 +9,18 @@ import Foundation
 
 final class DetailViewModel {
     
-    var moviesDetail : [MovieDetail] = []
+    var moviesDetail: MovieDetail!
     
-    func fetchMoviesDetail(id:String,completion:@escaping()->Void){
-        self.moviesDetail.removeAll()
+    func fetchMoviesDetail(id:String,completion:@escaping()->Void) {
         NetworkService.shared.fetchMovies(by: id) { [weak self] result in
             switch result{
             case.success(let movie):
-                self?.moviesDetail.append(movie)
+                self?.moviesDetail = movie
                 completion()
-            case.failure(_):
+            case.failure(let error):
+                print(error)
                 completion()
             }
-        
-            
         }
     }
 }

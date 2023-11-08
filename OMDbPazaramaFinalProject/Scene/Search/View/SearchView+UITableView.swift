@@ -40,7 +40,7 @@ extension SearchViewController: UITableViewDelegate {
         let selectedMovie = viewModel.movies[indexPath.row]
 
         let detailViewController = DetailViewController()
-        detailViewController.selectedMovie = selectedMovie
+        detailViewController.movieID = selectedMovie.imdbID
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

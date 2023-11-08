@@ -7,16 +7,39 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
+protocol SearchViewControllerDelegate: AnyObject {
+    func searchViewController(_ viewController: SearchViewController, didUpdateSearchResults searchText: String)
+}
+
+protocol SearchViewProtocol: AnyObject {
+    var searchText: String { get set }
+    var viewModel: SearchViewModelProtocol { get set }
+    
+    func setupUI()
+    func setupEmptyWarningLabel()
+    func updateSearchResults(for searchController: UISearchController)
+}
+
+final class SearchViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating, SearchViewProtocol {
+    
+    var viewModel: SearchViewModelProtocol
+    var networkService: NetworkServiceProtocol
     var searchText: String = ""
-
+    
+    weak var delegate: SearchViewControllerDelegate?
+    
+    init(viewModel: SearchViewModelProtocol, networkService: NetworkServiceProtocol) {
+        self.viewModel = viewModel
+        self.networkService = networkService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     let searchController = UISearchController()
-
-    lazy var viewModel: SearchViewModel = {
-        let vm = SearchViewModel()
-        return vm
-    }()
-
+    
     let tableView: UITableView = {
         let table = UITableView()
         return table
@@ -30,40 +53,39 @@ class SearchViewController: UIViewController, UISearchControllerDelegate, UISear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
     }
-
+    
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(SearchListCell.self, forCellReuseIdentifier: "MoviesCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
-
+        
         tableView.rowHeight = 200
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
+        ])
     }
-
-    private func setupUI() {
+    
+    func setupUI() {
         view.backgroundColor = .systemOrange
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
         self.navigationController?.navigationBar.prefersLargeTitles = true
-
+        
         setupTableView()
         setupEmptyWarningLabel()
     }
     
-    private func setupEmptyWarningLabel() {
+    func setupEmptyWarningLabel() {
         view.addSubview(emptyWarningLabel)
         
         NSLayoutConstraint.activate([
@@ -72,7 +94,7 @@ class SearchViewController: UIViewController, UISearchControllerDelegate, UISear
         ])
     }
     
-    @objc(updateSearchResultsForSearchController:) func updateSearchResults(for searchController: UISearchController) {
+    @objc func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else {
             return
         }
@@ -83,6 +105,7 @@ class SearchViewController: UIViewController, UISearchControllerDelegate, UISear
             DispatchQueue.main.async {
                 self?.emptyWarningLabel.isHidden = !(self?.viewModel.movies.isEmpty ?? false)
                 self?.tableView.reloadData()
+                self?.delegate?.searchViewController(self!, didUpdateSearchResults: text)
             }
         }
     }

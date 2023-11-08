@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavouriteViewController: UIViewController{
+final class FavouriteViewController: UIViewController{
     
     let viewModel = FavoritesViewModel()
     
@@ -18,8 +18,6 @@ class FavouriteViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-
         setupUI()
         tableView.delegate = self
         tableView.dataSource = self
@@ -61,6 +59,5 @@ class FavouriteViewController: UIViewController{
             }
         }
     }
-
 }
 
