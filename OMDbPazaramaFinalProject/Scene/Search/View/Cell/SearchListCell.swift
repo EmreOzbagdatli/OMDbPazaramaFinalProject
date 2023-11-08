@@ -15,7 +15,14 @@ final class SearchListCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        commonInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func commonInit() {
         addSubview(moviePoster)
         addSubview(movieTitleLabel)
         addSubview(movieYearLabel)
@@ -24,30 +31,23 @@ final class SearchListCell: UITableViewCell {
         configureLabels()
         setImageConstraints()
         setLabelsConstraints()
-        
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configureImageView() {
+    private func configureImageView() {
         moviePoster.layer.cornerRadius = 10
         moviePoster.clipsToBounds = true
         moviePoster.contentMode = .scaleAspectFit
-        
-        
     }
-    func configureLabels() {
+    
+    private func configureLabels() {
         movieTitleLabel.numberOfLines = 0
         movieTitleLabel.adjustsFontSizeToFitWidth = true
         
         movieYearLabel.numberOfLines = 0
         movieYearLabel.adjustsFontSizeToFitWidth = true
-        
     }
     
-    func setImageConstraints() {
+    private func setImageConstraints() {
         moviePoster.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -58,7 +58,7 @@ final class SearchListCell: UITableViewCell {
         ])
     }
     
-    func setLabelsConstraints() {
+    private func setLabelsConstraints() {
         movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         movieYearLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -72,8 +72,6 @@ final class SearchListCell: UITableViewCell {
             movieYearLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor, constant: 20),
             movieYearLabel.heightAnchor.constraint(equalToConstant: 40),
             movieYearLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            
-            
         ])
     }
 }

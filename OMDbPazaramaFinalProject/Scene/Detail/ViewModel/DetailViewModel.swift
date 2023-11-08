@@ -9,9 +9,9 @@ import Foundation
 
 final class DetailViewModel {
     
-    var moviesDetail: MovieDetail!
+    var moviesDetail: MovieDetail?
     
-    func fetchMoviesDetail(id:String,completion:@escaping()->Void) {
+    func fetchMoviesDetail(id: String, completion:@escaping()->Void) {
         NetworkService.shared.fetchMovies(by: id) { [weak self] result in
             switch result{
             case.success(let movie):

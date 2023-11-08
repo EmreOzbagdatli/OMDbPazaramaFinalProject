@@ -8,6 +8,17 @@
 import XCTest
 @testable import OMDbPazaramaFinalProject
 
+final class MockService: NetworkServiceProtocol {
+    func fetchMovies(by title: String, pageIndex: Int, completion: @escaping (Result<MovieSearchResult, NetworkError>) -> Void) {
+        completion(.failure(NetworkError.decodeError))
+    }
+    
+    func fetchMovies(by id: String, completion: @escaping (Result<MovieDetail, NetworkError>) -> Void) {
+        completion(.success(MovieDetail(title: "First Title", year: "2000", runtime: "", genre: "", director: "", writer: "", actors: "", plot: "", poster: "", imdbRating: "", imdbID: "")))
+    }
+}
+
+
 final class OMDbPazaramaFinalProjectTests: XCTestCase {
 
     override func setUpWithError() throws {

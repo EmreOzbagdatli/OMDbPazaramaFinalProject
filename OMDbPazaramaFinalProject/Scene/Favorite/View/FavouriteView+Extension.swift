@@ -10,17 +10,18 @@ import UIKit
 extension FavouriteViewController: UITableViewDelegate, UITableViewDataSource {
    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.detailMovies.count
+        return viewModel?.movies.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! SearchListCell
         
-        let movie = viewModel.detailMovies[indexPath.row]
-        cell.movieTitleLabel.text = movie.title
-        cell.movieYearLabel.text = movie.year
-        if let imageURL = URL(string: movie.poster) {
-            cell.moviePoster.kf.setImage(with: imageURL)
+        if let movie = viewModel?.movies[indexPath.row] {
+            cell.movieTitleLabel.text = movie.title
+            cell.movieYearLabel.text = movie.year
+            if let imageURL = URL(string: movie.poster) {
+                cell.moviePoster.kf.setImage(with: imageURL)
+            }
         }
         return cell
     }
@@ -36,15 +37,16 @@ extension FavouriteViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             var favMovies = UserDefaults.standard.stringArray(forKey: "favoriteMovies") ?? []
-            let currentMovie = viewModel.detailMovies[indexPath.row]
-            favMovies.removeAll(where: { favMovies in
-                favMovies == currentMovie.imdbID
-            })
-            viewModel.detailMovies.removeAll { movie in
-                movie.imdbID == currentMovie.imdbID
+            if let currentMovie = viewModel?.movies[indexPath.row] {
+                favMovies.removeAll(where: { favMovies in
+                    favMovies == currentMovie.imdbID
+                })
+                viewModel?.movies.removeAll { movie in
+                    movie.imdbID == currentMovie.imdbID
+                }
+                UserDefaults.standard.setValue(favMovies, forKey: "favoriteMovies")
+                tableView.reloadData()
             }
-            UserDefaults.standard.setValue(favMovies, forKey: "favoriteMovies")
-            tableView.reloadData()
             
         }
     }

@@ -14,6 +14,8 @@ protocol SearchViewModelDelegate: AnyObject {
 protocol SearchViewModelProtocol {
     var movies: [MovieSearchResult.MovieInfo] { get set }
     
+    var networkService: NetworkServiceProtocol? { get set }
+    
     func resetPageIndex()
     func incrementPageIndex()
     func fetchMovies(by title: String, completion: @escaping () -> Void)
@@ -22,7 +24,7 @@ protocol SearchViewModelProtocol {
 final class SearchViewModel: SearchViewModelProtocol {
     
     var movies: [MovieSearchResult.MovieInfo] = []
-    var networkService: NetworkServiceProtocol
+    var networkService: NetworkServiceProtocol?
     
     weak var delegate: SearchViewModelDelegate?
     

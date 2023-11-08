@@ -13,30 +13,18 @@ protocol SearchViewControllerDelegate: AnyObject {
 
 protocol SearchViewProtocol: AnyObject {
     var searchText: String { get set }
-    var viewModel: SearchViewModelProtocol { get set }
     
     func setupUI()
     func setupEmptyWarningLabel()
     func updateSearchResults(for searchController: UISearchController)
 }
 
-final class SearchViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating, SearchViewProtocol {
+final class SearchViewController: UIViewController {
     
-    var viewModel: SearchViewModelProtocol
-    var networkService: NetworkServiceProtocol
+    var viewModel: SearchViewModelProtocol?
     var searchText: String = ""
     
     weak var delegate: SearchViewControllerDelegate?
-    
-    init(viewModel: SearchViewModelProtocol, networkService: NetworkServiceProtocol) {
-        self.viewModel = viewModel
-        self.networkService = networkService
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     let searchController = UISearchController()
     
@@ -81,6 +69,7 @@ final class SearchViewController: UIViewController, UISearchControllerDelegate, 
         searchController.searchResultsUpdater = self
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
+        
         setupTableView()
         setupEmptyWarningLabel()
     }
@@ -94,19 +83,24 @@ final class SearchViewController: UIViewController, UISearchControllerDelegate, 
         ])
     }
     
+}
+
+extension SearchViewController: UISearchControllerDelegate, UISearchResultsUpdating, SearchViewProtocol {
     @objc func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else {
             return
         }
         searchText = text
-        viewModel.resetPageIndex()
+        viewModel?.resetPageIndex()
         
-        viewModel.fetchMovies(by: text) { [weak self] in
+        viewModel?.fetchMovies(by: text) { [weak self] in
             DispatchQueue.main.async {
-                self?.emptyWarningLabel.isHidden = !(self?.viewModel.movies.isEmpty ?? false)
+                self?.emptyWarningLabel.isHidden = !(self?.viewModel?.movies.isEmpty ?? false)
                 self?.tableView.reloadData()
                 self?.delegate?.searchViewController(self!, didUpdateSearchResults: text)
             }
         }
     }
+    
+    
 }

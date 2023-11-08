@@ -15,12 +15,15 @@ final class MoviesTabBarController: UITabBarController {
     }
 
     private func configureTabs() {
+        let vc1 = FavouriteViewController()
+        let vc2 = SearchViewController()
+        
         
         let networkService = NetworkServiceAdapter()
-        let viewModel = SearchViewModel(networkService: networkService)
-        
-        let vc1 = FavouriteViewController()
-        let vc2 = SearchViewController(viewModel: viewModel, networkService: networkService)
+        let searchViewModel = SearchViewModel(networkService: networkService)
+        let favoriteViewModel = FavoritesViewModel(networkService: networkService, delegate: vc1)
+        vc1.viewModel = favoriteViewModel
+        vc2.viewModel = searchViewModel
         
         //Set tab Images
         vc1.tabBarItem.image = UIImage(systemName: "folder")
