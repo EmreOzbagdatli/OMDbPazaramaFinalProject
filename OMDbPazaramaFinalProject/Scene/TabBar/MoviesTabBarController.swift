@@ -31,7 +31,7 @@ final class MoviesTabBarController: UITabBarController {
         
         //Set titles
         vc1.title = "Favourite"
-        vc2.title = "Search"
+        vc2.title = "Movies"
         
         let nav1 = UINavigationController(rootViewController: vc1)
         let nav2 = UINavigationController(rootViewController: vc2)

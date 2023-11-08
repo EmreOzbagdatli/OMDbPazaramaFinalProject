@@ -37,14 +37,20 @@ final class SearchListCell: UITableViewCell {
         moviePoster.layer.cornerRadius = 10
         moviePoster.clipsToBounds = true
         moviePoster.contentMode = .scaleAspectFit
+        
+      
     }
     
     private func configureLabels() {
         movieTitleLabel.numberOfLines = 0
         movieTitleLabel.adjustsFontSizeToFitWidth = true
+        movieTitleLabel.textAlignment = .center
+        movieTitleLabel.font = .boldSystemFont(ofSize: 24)
         
         movieYearLabel.numberOfLines = 0
         movieYearLabel.adjustsFontSizeToFitWidth = true
+        movieYearLabel.textAlignment = .center
+        movieYearLabel.font = .boldSystemFont(ofSize: 24)
     }
     
     private func setImageConstraints() {
@@ -55,6 +61,7 @@ final class SearchListCell: UITableViewCell {
             moviePoster.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             moviePoster.heightAnchor.constraint(equalToConstant: 200),
             moviePoster.widthAnchor.constraint(equalToConstant: 200)
+            
         ])
     }
     
@@ -64,11 +71,11 @@ final class SearchListCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             movieTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            movieTitleLabel.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 20),
+            movieTitleLabel.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 10),
             movieTitleLabel.heightAnchor.constraint(equalToConstant: 40),
             movieTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             
-            movieYearLabel.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 20),
+            movieYearLabel.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 10),
             movieYearLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor, constant: 20),
             movieYearLabel.heightAnchor.constraint(equalToConstant: 40),
             movieYearLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
